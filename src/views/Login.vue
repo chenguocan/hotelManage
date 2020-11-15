@@ -44,7 +44,7 @@ export default {
   },
   methods:{
     submitLogin(){
-
+      this.$router.push("/index");
     }
   }
 }

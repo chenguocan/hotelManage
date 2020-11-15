@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
-import Login from "../views/Login.vue";
+import Login from "../views/Login.vue"
+import Welcome from "@/views/Welcome";
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,6 +14,15 @@ const routes = [
     path:"/index",
     name:'Index',
     component: Index,
+    children:[{
+      path:'/index',
+      redirect:'/index/welcome'
+    },
+    {
+      path:'/index/welcome',
+      name:"Welcome",
+      component:Welcome,
+    }]
   }
 ]
 

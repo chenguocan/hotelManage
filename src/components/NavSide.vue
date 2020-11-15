@@ -1,7 +1,7 @@
 <template>
   <div class="nav-side">
       <el-col>
-        <h5 class="nav-title">导航栏</h5>
+        <div class="nav-title">导航栏<slot></slot></div>
         <el-menu
             default-active="2"
             class="el-menu-vertical-demo"
@@ -9,9 +9,12 @@
             @close="handleClose"
             background-color="#545c64"
             text-color="#fff"
+            :collapse="isCollapse"
+            :collapse-transition="false"
             active-text-color="#ffd04b">
           <el-submenu index="1">
             <template slot="title">
+              <i class="el-icon-s-custom"></i>
               <span>导航一</span>
             </template>
               <el-menu-item index="1-1">选项1</el-menu-item>
@@ -25,6 +28,7 @@
 <script>
 export default {
   name: "NavSide",
+  props:['isCollapse'],
   methods:{
     handleClose(){
       console.log("close");
@@ -39,7 +43,11 @@ export default {
 <style scoped lang="scss">
 .nav-side{
   width: 100%;
+  .el-menu{
+    border-right: 0;
+  }
   .nav-title{
+    margin: 10px 0;
     color:white;
     text-align: center;
   }
