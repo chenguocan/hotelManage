@@ -6,22 +6,21 @@
           <img class="icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605436528491&di=989a24966e62bada47f63a3d38a42429&imgtype=0&src=http%3A%2F%2Fimg.huoyuan51.com%2F2020%2F04%2F14yb820Q0ceB.jpg" />
           <h1>酒店管理系统</h1>
         </div>
-        <div class="user"><span class="exit" @click="exit">退出</span></div>
+        <div class="user"><span  @click="exit">退出</span></div>
       </el-header>
       <el-container>
         <!--导航栏-->
-        <el-aside :width="isCollapse?'64px':'250px'">
+        <el-aside :width="isCollapse?'100px':'250px'">
           <NavSide :isCollapse="isCollapse">
-              <div class="collapse">
-                <span @click="xxx">|||</span></div>
+            <i class="el-icon-s-operation" @click="xxx" />
           </NavSide>
         </el-aside>
         <!--主界面-->
         <el-container>
-          <el-main :style="{'margin-left':isCollapse?'64px':'250px'}">
+          <el-main :style="{'margin-left':isCollapse?'100px':'250px'}">
             <router-view></router-view>
           </el-main>
-          <el-footer :style="{'margin-left':isCollapse?'64px':'250px'}">Copyright © 2019-2020 xxx酒店. All rights reserved</el-footer>
+          <el-footer>Copyright © 2019-2020 xxx酒店. All rights reserved</el-footer>
           <!--底部栏-->
         </el-container>
       </el-container>
@@ -67,15 +66,6 @@ export default {
       float: right;
       margin:5px 5px 0 0;
     }
-    .collapse{
-      background: #545c64;
-      font-size: 12px;
-      padding:3px 0;
-      span{
-        font-size: 12px;
-        cursor: pointer;
-      }
-    }
   }
   .el-header{
     width: 100%;
@@ -91,10 +81,7 @@ export default {
     }
     justify-content: space-between;
     .user{
-      .exit{
-        cursor: pointer;
-        color:gray;
-      }
+      color:gray;
     }
   }
   .el-main{

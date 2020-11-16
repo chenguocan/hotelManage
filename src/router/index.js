@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import Welcome from "@/views/Welcome";
+import Add from "@/views/Add/Add";
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,6 +23,11 @@ const routes = [
       path:'/index/welcome',
       name:"Welcome",
       component:Welcome,
+    },
+    {
+      path:'/index/add',
+      name:"Add",
+      component: Add,
     }]
   }
 ]
