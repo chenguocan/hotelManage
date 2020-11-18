@@ -4,16 +4,23 @@
       <el-header>
         <div class="title">
           <img class="icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605436528491&di=989a24966e62bada47f63a3d38a42429&imgtype=0&src=http%3A%2F%2Fimg.huoyuan51.com%2F2020%2F04%2F14yb820Q0ceB.jpg" />
-          <h1>酒店管理系统</h1>
+          <h1>磐基莲花里共享办公</h1>
         </div>
-        <div class="user"><span class="exit" @click="exit">退出</span></div>
+        <div class="user">
+          <el-input placeholder="搜索从这里开始" style="width: 250px;margin-right: 20px" size="small" v-model="search">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+          <el-avatar size="large" src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"></el-avatar>
+          <span class="exit" @click="exit">退出</span>
+        </div>
       </el-header>
       <el-container>
         <!--导航栏-->
         <el-aside :width="isCollapse?'64px':'250px'">
           <NavSide :isCollapse="isCollapse">
               <div class="collapse">
-                <span @click="xxx">|||</span></div>
+                <i class="el-icon-s-grid" @click="toggleCollapse"></i>
+              </div>
           </NavSide>
         </el-aside>
         <!--主界面-->
@@ -38,15 +45,17 @@ export default {
   },
   data(){
     return{
-      isCollapse:false
+      isCollapse:false,
+      search:'',
     }
   },
   methods:{
-    xxx(){
+    toggleCollapse(){
       this.isCollapse=!this.isCollapse;
     },
     exit(){
-      this.$router.push("/");
+      this.$store.commit("removeStorage");
+      this.$router.push("/login");
     }
   },
   name: 'Home',
@@ -70,11 +79,9 @@ export default {
     .collapse{
       background: #545c64;
       font-size: 12px;
-      padding:3px 0;
-      span{
-        font-size: 12px;
-        cursor: pointer;
-      }
+      padding:8px 0;
+      display: inline-block;
+      cursor: pointer;
     }
   }
   .el-header{
@@ -91,7 +98,12 @@ export default {
     }
     justify-content: space-between;
     .user{
+      width: 400px;
+      margin-left: 100px;
+      display: flex;
+      align-items: center;
       .exit{
+        margin-left: 30px;
         cursor: pointer;
         color:gray;
       }

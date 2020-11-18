@@ -2,9 +2,10 @@
   <div class="login-page">
     <div class="login">
       <!--标题-->
-      <h2 class="title">后台管理系统</h2>
+      <h2 class="title">磐基莲花里共享办公</h2>
       <!--登录表单-->
-      <el-form :model="ruleLoginForm" status-icon :rules="loginRules" ref="ruleLoginForm" label-width="100px"
+      <!--:rules="loginRules"-->
+      <el-form :model="ruleLoginForm" status-icon  ref="ruleLoginForm" label-width="100px"
                class="demo-ruleForm login-form">
         <el-form-item prop="username" label-width="20px">
           <el-input type="checkPassword" v-model="ruleLoginForm.username" autocomplete="off"  placeholder="请输入账号"></el-input>
@@ -24,11 +25,12 @@ export default {
   name: "Login",
   data() {
     return {
+      userInfo:'',
       ruleLoginForm: {
         username: '',
         password: '',
       },
-      loginRules: {
+/*      loginRules: {
         //验证用户名是否合法
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -39,13 +41,41 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur', },
         ],
-      }
+      }*/
     }
   },
   methods:{
-    submitLogin(){
-      this.$router.push("/index");
+    async submitLogin(){
+      const res=await this.$api.login({
+        company:'fe77e4c39c32be1c',
+        code:8888,
+        password:1212,
+        language:'CHN',
+      })
+      console.log(res);
+      /*localStorage.setItem("token","12312");
+      this.$router.push("/index");*/
     }
+/*    async submitLogin(){
+      const res=await this.$api.hello('');
+      if(res.data.status===200){
+        this.userInfo=res.data.data
+        this.$store.commit("setToken",this.userInfo.token);
+        this.$message({
+          type:'success',
+          duration:1500,
+          message:'登录成功'
+        })
+        await this.$router.push("/index");
+      }else{
+        this.$message({
+          type:'error',
+          duration:1500,
+          message:'用户名或密码错误'
+        })
+      }
+      console.log(res);
+    }*/
   }
 }
 </script>

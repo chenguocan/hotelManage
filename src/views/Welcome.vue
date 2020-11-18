@@ -1,12 +1,22 @@
 <template>
     <div>
-      <span>上次登录时间</span>
+      <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="item in 6" :key="item">
+          <h3 class="medium">{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
     </div>
 </template>
 
 <script>
 export default {
-name: "Welcome"
+  name: "Welcome",
+  data(){
+    return{
+    }
+  },
+  created() {
+  }
 }
 </script>
 
