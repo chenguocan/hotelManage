@@ -5,8 +5,8 @@ import store from "@/store/index"
 // 创建请求时可以用的配置选项
 let  instance = axios.create({ timeout: 1000 });
 // axios的全局配置
-instance.defaults.withCredentials = true;
-instance.defaults.baseURL = 'https://www.hotelcard.cn';
+
+instance.defaults.baseURL = 'https://www.hotelcard.cn/';
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 /*instance.defaults.headers.common['Authorization'] = localStorage.getItem("token");*/
 axios.interceptors.request.use(

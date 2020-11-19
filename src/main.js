@@ -4,8 +4,9 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import "@/lib/element"
-import api from "@/request/api"
-Vue.prototype.$api=api
+
+/*import api from "@/request/api"
+Vue.prototype.$api=api*/
 Vue.config.productionTip = false
 
 new Vue({

@@ -16,7 +16,6 @@ const routes = [
   {
     path:'/',
     redirect: "/index",
-    meta: {requireAuth: true}
   },
   {
     path: '/login',
@@ -25,7 +24,6 @@ const routes = [
   },{
     path:"/index",
     component: Index,
-    meta: {requireAuth: true},
     children:[{
       path:'/',
       redirect:'/index/welcome'
@@ -69,13 +67,12 @@ const router = new VueRouter({
   routes
 })
 router.beforeEach((to,from,next)=>{
-  if(to.meta.requireAuth===true){
-    const tokenStr = localStorage.getItem("token");
-    if(!tokenStr){
-      return next("/login");
-    }else{
-      return next();
-    }
+  if (to.path === "/login") {
+    return next();
+  }
+  const tokenStr = window.sessionStorage.getItem("token");
+  if (!tokenStr) {
+    return next("/login");
   }
   next();
 })

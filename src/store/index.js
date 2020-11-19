@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token:localStorage.getItem("token")?localStorage.getItem("token"):'',
+    token:sessionStorage.getItem("token")?sessionStorage.getItem("token"):'',
   },
   getters:{
     getSotrage(state){
       if(!state.token){
-        state.token=JSON.parse(localStorage.getItem("token"))
+        state.token=JSON.parse(sessionStorage.getItem("token"))
       }
       return state.token
     }
@@ -19,11 +18,11 @@ export default new Vuex.Store({
     //设置Token
     setToken(state,value){
       state.token=value;
-      localStorage.setItem('token',value);
+      sessionStorage.setItem('token',value);
     },
     //移除Token
     removeStorage(){
-      localStorage.removeItem('token')
+      sessionStorage.removeItem('token')
     }
   },
   actions: {
