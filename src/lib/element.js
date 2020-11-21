@@ -2,7 +2,7 @@ import Vue from "vue"
 import 'element-ui/lib/theme-chalk/index.css';
 import {Button,Form,FormItem,Input,Container,Aside,Main,Header,Footer,Col,Row,Menu,MenuItem,Submenu
     ,MenuItemGroup,Upload,Breadcrumb,BreadcrumbItem,Divider,Message,Option,
-    Select,Dialog,Radio,RadioGroup,Card,Avatar,Table,TableColumn,TimePicker,DatePicker,Pagination,Carousel,CarouselItem} from 'element-ui';
+    Select,Dialog,Radio,RadioGroup,Card,Image,Tree,Avatar,TabPane,Table,TableColumn,Tabs,TimePicker,DatePicker,Pagination,Carousel,CarouselItem} from 'element-ui';
 Vue.use(Button);
 Vue.use(Form);
 Vue.use(FormItem);
@@ -36,5 +36,9 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Tree);
+Vue.use(Image)
 Vue.prototype.$message = Message
 window.$message=Message

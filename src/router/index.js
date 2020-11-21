@@ -10,6 +10,8 @@ import Select from "@/views/Station/Select";
 import StationDetail from "@/views/Station/StationDetail";
 import RentDetail from "@/views/Rent/RentDetail";
 import Option from "@/views/Rent/Option";
+import ItemType from "@/views/ItemType/ItemType";
+import TypeMessage from "@/views/ItemType/TypeMessage";
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,6 +52,12 @@ const routes = [
     },{
       path:'/index/option',
       component: Option
+    },{
+      path:'/index/itemtype',
+      component: ItemType
+    },{
+      path:'/index/message',
+      component: TypeMessage
     }]
   },
   {
@@ -70,7 +78,7 @@ router.beforeEach((to,from,next)=>{
   if (to.path === "/login") {
     return next();
   }
-  const tokenStr = window.sessionStorage.getItem("token");
+  const tokenStr = window.sessionStorage.getItem("uid");
   if (!tokenStr) {
     return next("/login");
   }

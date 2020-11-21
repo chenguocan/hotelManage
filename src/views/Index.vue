@@ -4,7 +4,7 @@
       <el-header>
         <div class="title">
           <img class="icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605436528491&di=989a24966e62bada47f63a3d38a42429&imgtype=0&src=http%3A%2F%2Fimg.huoyuan51.com%2F2020%2F04%2F14yb820Q0ceB.jpg" />
-          <h1>磐基莲花里共享办公</h1>
+          <h1>租赁管理系统</h1>
         </div>
         <div class="user">
           <el-input placeholder="搜索从这里开始" style="width: 250px;margin-right: 20px" size="small" v-model="search">
@@ -17,7 +17,7 @@
       <el-container>
         <!--导航栏-->
         <el-aside :width="isCollapse?'64px':'250px'">
-          <NavSide :isCollapse="isCollapse">
+          <NavSide :isCollapse="isCollapse" :MenuList="menuList">
               <div class="collapse">
                 <i class="el-icon-s-grid" @click="toggleCollapse"></i>
               </div>
@@ -28,7 +28,7 @@
           <el-main :style="{'margin-left':isCollapse?'64px':'250px'}">
             <router-view></router-view>
           </el-main>
-          <el-footer :style="{'margin-left':isCollapse?'64px':'250px'}">Copyright © 2019-2020 xxx酒店. All rights reserved</el-footer>
+          <!--<el-footer :style="{'margin-left':isCollapse?'64px':'250px'}">Copyright © 2019-2020 xxx酒店. All rights reserved</el-footer>-->
           <!--底部栏-->
         </el-container>
       </el-container>
@@ -47,14 +47,34 @@ export default {
     return{
       isCollapse:false,
       search:'',
+      menuList:[],
     }
   },
+  created() {
+    this.getMenu();
+  },
   methods:{
+    async getMenu(){
+      const res=await this.$request.post('/Console/GetMenu');
+      this.menuList=res.data.data;
+      if(res.data.errCode!==0){
+        this.$message({
+          type:'error',
+          message:res.data.errMsg
+        })
+      }
+      console.log(res);
+    },
     toggleCollapse(){
       this.isCollapse=!this.isCollapse;
     },
-    exit(){
-      this.$store.commit("removeStorage");
+    async exit(){
+      await this.$request.post("/Base/logout");
+      window.sessionStorage.clear();
+      this.$message({
+        type:'success',
+        message:'成功退出'
+      })
       this.$router.push("/login");
     }
   },

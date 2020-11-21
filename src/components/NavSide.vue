@@ -13,36 +13,30 @@
             :collapse="isCollapse"
             :collapse-transition="false"
             active-text-color="#ffd04b">
-          <el-submenu index="1">
+          <el-submenu :index="item.id" v-for="(item) in MenuList" :key="item.id">
             <template slot="title">
-              <i class="el-icon-s-custom"></i>
-              <span>首页</span>
+              <i class="el-icon-menu"></i>
+              <span>{{item.name}}</span>
             </template>
-            <el-menu-item index="1-1" @click="goToPage('/stationdetail')">四工位</el-menu-item>
-            <el-menu-item index="1-2" @click="goToPage('/stationdetail')">八工位</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-s-custom"></i>
-              <span>预定</span>
+            <template v-if="item.menu">
+              <div v-for="item2 in item.menu" :key="item2.id">
+                  <el-submenu :index="item2.id" v-if="item2.menu">
+                    <template slot="title">
+                      <span>{{item2.name}}</span>
+                    </template>
+                    <el-menu-item :index="item3.id" v-for="item3 in item2.menu" :key="item3.id">
+                      <template slot="title">
+                        <span>{{item3.name}}</span>
+                      </template>
+                    </el-menu-item>
+                  </el-submenu>
+                  <el-menu-item :index="item2.id" v-else>
+                    <template>
+                      <span>{{item2.name}}</span>
+                    </template>
+                  </el-menu-item>
+              </div>
             </template>
-            <el-menu-item index="2-1" @click="goToPage('/add')">添加工位</el-menu-item>
-            <el-menu-item index="2-2" @click="goToPage('/option')">工位操作</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-s-custom"></i>
-              <span>管理</span>
-            </template>
-            <el-menu-item index="3-1" @click="goToPage('/rentDetail')">租赁情况</el-menu-item>
-          </el-submenu>
-         <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-s-custom"></i>
-              <span>个人信息</span>
-            </template>
-              <el-menu-item index="1-1" @click="goToPage('/select')">筛选查询</el-menu-item>
-              <el-menu-item index="1-2" @click="goToPage('/person')">人员详情</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-col>
@@ -52,7 +46,7 @@
 <script>
 export default {
   name: "NavSide",
-  props:['isCollapse'],
+  props:['isCollapse','MenuList'],
   methods:{
     handleClose(){
       console.log("close");
@@ -60,9 +54,6 @@ export default {
     handleOpen(){
       console.log("open");
     },
-    goToPage(path){
-      this.$router.push('/index'+path);
-    }
   }
 }
 </script>

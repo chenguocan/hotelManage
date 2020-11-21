@@ -2,11 +2,14 @@
   <div class="login-page">
     <div class="login">
       <!--标题-->
-      <h2 class="title">磐基莲花里共享办公</h2>
+      <h2 class="title">租赁管理系统</h2>
       <!--登录表单-->
       <!--:rules="loginRules"-->
       <el-form :model="loginForm" status-icon  ref="loginForm" label-width="100px"
                class="demo-ruleForm login-form">
+        <el-form-item prop="company" label-width="20px">
+          <el-input type="checkPassword" v-model="loginForm.company" autocomplete="off"  placeholder="请输入公司代码"></el-input>
+        </el-form-item>
         <el-form-item prop="username" label-width="20px">
           <el-input type="checkPassword" v-model="loginForm.username" autocomplete="off"  placeholder="请输入账号"></el-input>
         </el-form-item>
@@ -21,37 +24,42 @@
 </template>
 
 <script>
-//import axios from "axios"
+import getMd5 from "@/lib/getMd5";
 export default {
   name: "Login",
   data() {
     return {
       userInfo:'',
       loginForm: {
-        username: '',
-        password: '',
+        company:'fe77e4c39c32be1c',
+        username: '8888',
+        password: '1212',
       },
     }
   },
   methods:{
     async submitLogin(){
-/*      let company="fe77e4c39c32be1c";
-      let language="CHN"
-      const res=await axios.post("https://www.hotelcard.cn/Publish/Base/Login",{
-        company,
+      const res=await this.$request.post("https://www.hotelcard.cn/Publish/Base/Login",{
+        company:this.loginForm.company,
         code:this.loginForm.username,
         password:this.loginForm.password,
-        language,
+        language:'CHN',
       })
-      if(res.status!==200){
+      if(res.data.errCode!==0){
         return this.$message({
           type:'error',
-          message:'登录失败'
+          message:res.data.errMsg
         })
-      }*/
-      sessionStorage.setItem("token",'123');
+      }
+      getMd5(res.data.data.key);
+      sessionStorage.setItem('key',res.data.data.key);
+      sessionStorage.setItem("uid",res.data.data.uid);
+      this.$message({
+        type:'success',
+        message:'登录成功'
+      })
       this.$router.push("/index");
-    }
+    },
   }
 }
 </script>
@@ -72,6 +80,7 @@ export default {
     width: 350px;
     height: 300px;
     padding-right: 20px;
+    padding-bottom: 20px;
     box-shadow: 0 0 1px gray;
     .login-btn{
       width: 330px;
