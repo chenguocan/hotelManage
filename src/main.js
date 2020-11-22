@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import "@/lib/element"
 import request from "@/request/request"
+
+
 Vue.prototype.$request=request
 Vue.config.productionTip = false
 

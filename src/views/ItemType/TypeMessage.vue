@@ -1,5 +1,8 @@
 <template>
   <div>
+
+
+    <el-button  icon="el-icon-arrow-left" circle size="small" @click="back"></el-button>
     <el-carousel :interval="4000" type="card" height="200px">
       <el-carousel-item v-for="item in currentType.banner" :key="item">
         <el-image
@@ -12,55 +15,58 @@
         <div class="title">
           <p>{{currentType.name}}</p>
           <p v-html="currentType.content"></p>
-          <p class="price">￥{{currentType.price}}元/月</p>
+          <p class="price">￥{{currentType.price}}元/{{cycle[currentType.si]}}</p>
         </div>
         <div class="type-image">
           <el-image style="width: 200px; height: 200px" :src="currentType.image"></el-image>
         </div>
       </div>
       <div class="option">
-        <el-button type="primary" class="modify" @click="reviseVisible = true">修改</el-button>
+        <el-button type="primary" class="modify" @click="revise">修改</el-button>
       </div>
     </el-card>
-    <el-dialog title="修改信息" center :visible.sync="reviseVisible">
- <!--       <el-form :model="typeForm">
-          <el-form-item label="标题">
-            <el-input v-model="typeForm.title" placeholder="请输入标题"></el-input>
-          </el-form-item>
-          <el-form-item label="子标题">
-            <el-input v-model="typeForm.sub_title" placeholder="请输入子标题"></el-input>
-          </el-form-item>
-        </el-form>-->
+    <el-dialog title="修改信息" center :visible.sync="reviseVisible" width="800px">
+      <AddType :current-type="currentType"></AddType>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import AddType from "@/views/Add/AddType";
 export default {
   name: "TypeMessage",
+  components: {AddType},
   data() {
     return {
-      currentType: {
-        content: '',
-        id: '',
-        image: '',
-        price: '',
-        reserve: '',
-        show: '',
-        state: '',
-        subtitle: '',
-        title: '',
-      },
+      currentType: {},
       reviseVisible: false,
+      cycle:{
+        1:'时',
+        2:'天',
+        3:'周',
+        4:'月',
+        5:'季',
+        6:'年'
+      }
     }
   },
   created() {
-    this.currentType = this.$route.query.type;
+    this.currentType = JSON.parse(this.$route.query.type);
+    console.log(this.currentType);
+    this.currentType.price=(this.currentType.price/100).toFixed(2);
   },
   methods: {
     submit() {
       this.reviseVisible = false
     },
+    revise(){
+      console.log(this.currentType);
+      this.reviseVisible=true;
+      /*this.$router.push('/index/addtype');*/
+    },
+    back(){
+      this.$router.back(-1);
+    }
   }
 }
 </script>

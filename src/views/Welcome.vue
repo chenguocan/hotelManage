@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-carousel :interval="4000" type="card" height="150px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3 class="medium">{{ item }}</h3>
+      <el-carousel-item v-for="item in 6" :key="item">
+        <h3 class="medium">{{ item }}</h3>
       </el-carousel-item>
     </el-carousel>
     <el-card class="about">
@@ -11,8 +11,13 @@
     </el-card>
     <el-card>
       <div class="title">
-        <h3>{{itemTypes.title}}</h3>
-        <p class="sub_title">{{itemTypes.sub_title}}</p>
+        <div class="titleDetail">
+          <h3>{{itemTypes.title}}</h3>
+          <p class="sub_title">{{itemTypes.sub_title}}</p>
+        </div>
+        <div class="btn">
+          <el-button size="small" icon="el-icon-edit" circle @click="edit"></el-button>
+        </div>
       </div>
       <el-tree
           :data="itemTypes.list"
@@ -21,64 +26,109 @@
           @node-click="typeDetail">
       </el-tree>
     </el-card>
+    <el-dialog title="修改标题" center :visible.sync="editVisible">
+      <el-form :model="titleForm">
+        <el-form-item label="标题">
+          <el-input v-model="titleForm.title" placeholder="请输入标题"></el-input>
+        </el-form-item>
+        <el-form-item label="子标题">
+          <el-input v-model="titleForm.sub_title" placeholder="请输入子标题"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="editVisible = false">取 消</el-button>
+    <el-button type="primary" @click="submit">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import getMd5 from "@/lib/getMd5";
-
+import md5 from "js-md5"
 export default {
   name: "Welcome",
   data() {
     return {
-      activeName:'first',
+      activeName: 'first',
       itemTypes: {
         list: [],
         title: '',
         sub_title: '',
       },
-      tagName:{
-        children:'list',
-        label:'name',
+      titleForm: {
+        title: '',
+        sub_title: '',
       },
+      tagName: {
+        children: 'list',
+        label: 'name',
+      },
+      editVisible: false,
     }
   },
-  created() {
+  mounted() {
+    console.log("123");
     this.getMenuItem();
+    console.log(this.itemTypes);
   },
   methods: {
+    edit() {
+      this.titleForm.title = this.itemTypes.title;
+      this.titleForm.sub_title = this.itemTypes.sub_title;
+      this.editVisible = true;
+    },
     async getMenuItem() {
       const res = await this.$request.post('/console/GetItemTypes');
-      console.log(res.data.data);
+      console.log(this.itemTypes.list);
       this.itemTypes.list = res.data.data.list;
       this.itemTypes.title = res.data.data.title;
       this.itemTypes.sub_title = res.data.data.sub_title;
+      console.log(res);
       console.log(this.itemTypes);
-      console.log(this.itemTypes.list);
+      sessionStorage.setItem('types',this.itemTypes);
     },
-    async typeDetail(data){
-      let id=data.id;
-      console.log(id.length)
-      if(id.length===8) {
-        let uid = sessionStorage.getItem('uid');
+    async typeDetail(data) {
+      let id = data.id;
+      if (id.length === 8) {
         let key = sessionStorage.getItem('key');
-        console.log(key);
-        getMd5(key, id)
-        let sign = sessionStorage.getItem('sign');
+        let signStr=`id=${id}&sign=${key}`;
+        let sign=md5(signStr).toUpperCase();
+        console.log(signStr);
+        console.log(sign);
         const res = await this.$request.post('/console/GetItemType', {id}, {
-          uid,
-          sign
+          headers:{
+            sign
+          }
         })
-        this.$router.push({path:'/index/message',query:{type:res.data.data}});
+        console.log(res);
+        let type=JSON.stringify(res.data.data);
+        this.$router.push({path: '/index/message', query: {type}});
       }
     },
-    currentType(list){
-      console.log(list);
-/*      this.$router.push({path:'/index/itemtype',query:{
-        list:JSON.stringify(list)
-      }})*/
-/*      const res = await this.$request.post('/console/GetItemType',{id});
-      console.log(res);*/
+    async submit(){
+      let signStr;
+      let key=sessionStorage.getItem('key');
+      signStr=`subtitle=${this.titleForm.sub_title}&title=${this.titleForm.title}&sign=${key}`;
+      console.log(signStr);
+      let sign=md5(signStr).toUpperCase();
+      console.log(sign)
+      let uid=sessionStorage.getItem('uid');
+      const res=await this.$request.post('/Console/SetItemTypesTitleAboutMobile',{
+        title:this.titleForm.title,
+        subtitle:this.titleForm.sub_title
+      },{
+        headers:{
+          uid,
+          sign
+        }
+      })
+      this.editVisible=false;
+      console.log(res);
+      this.$message({
+        type:'success',
+        message:res.data.errMsg
+      })
+      await this.getMenuItem();
     }
   }
 }
@@ -86,19 +136,28 @@ export default {
 
 <style scoped lang="scss">
 
-.about{
+.about {
   margin-bottom: 10px;
-  .image{
+
+  .image {
     height: 100px;
     width: 100px;
   }
 }
-.title{
+
+.title {
   display: flex;
-/*  height: 50px;*/
-  align-items: baseline;
-  .sub_title{
-    font-size:12px;
+  /*  height: 50px;*/
+  justify-content: space-between;
+  align-items: center;
+
+  .titleDetail {
+    display: flex;
+    align-items: baseline;
+  }
+
+  .sub_title {
+    font-size: 12px;
     margin-left: 12px;
   }
 }

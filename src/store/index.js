@@ -4,26 +4,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token:sessionStorage.getItem("token")?sessionStorage.getItem("token"):'',
-  },
-  getters:{
-    getSotrage(state){
-      if(!state.token){
-        state.token=JSON.parse(sessionStorage.getItem("token"))
-      }
-      return state.token
+    itemTypes:{
+      list: [],
+      title: '',
+      sub_title: '',
     }
   },
   mutations: {
-    //设置Token
-    setToken(state,value){
-      state.token=value;
-      sessionStorage.setItem('token',value);
-    },
-    //移除Token
-    removeStorage(){
-      sessionStorage.removeItem('token')
-    }
+      getTypes(state,types){
+        console.log(state);
+        state.itemTypes=types;
+      }
   },
   actions: {
   },

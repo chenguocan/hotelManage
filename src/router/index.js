@@ -3,16 +3,17 @@ import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import Welcome from "@/views/Welcome";
-import AddStation from "@/views/Station/AddStation";
 import NotFound from "@/views/NotFound";
-import Person from "@/views/Person/Person";
-import Select from "@/views/Station/Select";
-import StationDetail from "@/views/Station/StationDetail";
-import RentDetail from "@/views/Rent/RentDetail";
-import Option from "@/views/Rent/Option";
 import ItemType from "@/views/ItemType/ItemType";
 import TypeMessage from "@/views/ItemType/TypeMessage";
+import AddType from "@/views/Add/AddType";
+import AddImage from "@/views/Add/AddImage";
 Vue.use(VueRouter)
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
@@ -27,37 +28,24 @@ const routes = [
     path:"/index",
     component: Index,
     children:[{
-      path:'/',
+      path:'/index/',
       redirect:'/index/welcome'
     },
     {
       path:'/index/welcome',
       component:Welcome,
-    },
-    {
-      path:'/index/add',
-      component: AddStation,
-    },{
-      path:'/index/person',
-      component: Person
-    },{
-      path:'/index/stationdetail',
-      component: StationDetail,
-    },{
-      path:'/index/select',
-      component:Select,
-    },{
-      path: '/index/rentdetail',
-      component: RentDetail
-    },{
-      path:'/index/option',
-      component: Option
     },{
       path:'/index/itemtype',
       component: ItemType
     },{
       path:'/index/message',
-      component: TypeMessage
+      component: TypeMessage,
+    },{
+      path:'/index/addtype',
+      component: AddType
+    },{
+      path:'/index/addimg',
+      component: AddImage
     }]
   },
   {
