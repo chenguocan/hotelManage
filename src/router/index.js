@@ -8,6 +8,7 @@ import ItemType from "@/views/ItemType/ItemType";
 import TypeMessage from "@/views/ItemType/TypeMessage";
 import AddType from "@/views/Add/AddType";
 import AddImage from "@/views/Add/AddImage";
+import AddBanner from "@/views/Add/AddBanner";
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -46,6 +47,9 @@ const routes = [
     },{
       path:'/index/addimg',
       component: AddImage
+    },{
+      path: '/index/addbanner',
+      component:AddBanner
     }]
   },
   {

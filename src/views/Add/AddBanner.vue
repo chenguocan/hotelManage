@@ -1,23 +1,19 @@
 <template>
   <div class="picture">
-    <div class="upload">
-      <el-upload
-          ref="imgBroadcastUpload"
-          :auto-upload="false"
-          :file-list="diaLogForm.imgBroadcastList"
-          list-type="picture-card"
-          :on-change="imgBroadcastChange"
-          :on-remove="imgBroadcastRemove"
-          accept="image/jpg,image/png,image/jpeg"
-          :limit="1"
-          action=""
-      >
-        <i class="el-icon-plus"></i>
-      </el-upload>
-      <div slot="tip" class="el-upload__tip" v-if="type==='001'">上传232*172的图片效果更佳</div>
-      <div slot="tip" class="el-upload__tip" v-else>上传750*402的图片效果更佳</div>
-      <el-button type="primary" @click="submitDialogData">提交</el-button>
-    </div>
+    <el-upload
+        ref="imgBroadcastUpload"
+        :auto-upload="false" multiple
+        :file-list="diaLogForm.imgBroadcastList"
+        list-type="picture-card"
+        :on-change="imgBroadcastChange"
+        :on-remove="imgBroadcastRemove"
+        accept="image/jpg,image/png,image/jpeg"
+        action=""
+    >
+      <i class="el-icon-plus"></i>
+    </el-upload>
+    <div slot="tip" class="el-upload__tip">上传750*406的图片效果更佳</div>
+    <el-button type="primary" @click="submitDialogData">提交</el-button>
   </div>
 </template>
 
@@ -25,28 +21,15 @@
 import { uploadImgToBase64 } from '@/lib/utils' // 导入本地图片转base64的方法
 
 export default {
-  name: 'AddImage',
-  props:['group','type','upToDate'],
+  name: 'imgUpload',
   data () {
     return {
       diaLogForm: {
+        goodsName:'', // 商品名称字段
         imgBroadcastList:[], // 储存选中的图片列表
         imgsStr:''   // 后端需要的多张图base64字符串 , 分割
-      },
-      currentId:'',
-      currentType:'',
-      currentGroup:'',
+      }
     }
-  },
-  watch:{
-    type(){
-      this.currentType=this.type;
-    }
-  },
-  created() {
-    console.log(this.type,this.group);
-    this.currentId=this.$route.query.id;
-    console.log(this.$route.query.id);
   },
   methods: {
     // 图片选择后 保存在 diaLogForm.imgBroadcastList 对象中
@@ -79,43 +62,8 @@ export default {
       }
       console.log('图片转base64结束..., ', imgBroadcastListBase64)
       this.diaLogForm.imgsStr = imgBroadcastListBase64.join()
-      console.log(this.diaLogForm);
-      console.log(this.type);
-      let key=sessionStorage.getItem('key');
-      let signStr=`id=${this.currentId}&imageGroup=${this.group}&imageName=${this.diaLogForm.imgBroadcastList[0].name}&imageType=${this.type}&sign=${key}`;
-      console.log(signStr);
-      let sign=this.$md5(signStr).toUpperCase();
-      console.log(sign);
-      const res=await this.$request.post('/Console/SetImage',
-          {
-            id:this.currentId,
-            imageData:this.diaLogForm.imgsStr,
-            imageGroup:this.group,
-            imageName:this.diaLogForm.imgBroadcastList[0].name,
-            imageType:this.type
-          },{
-        headers:{
-          sign
-        }
-      })
-      if(res.data.errCode===0){
-        this.$message({
-          type:'success',
-          message:res.data.errMsg
-        })
-        this.$emit('update:upToDate',1);
-      }else{
-        this.$message({
-          type:'error',
-          message:res.data.errMsg
-        })
-      }
-      console.log(res);
-      this.$emit('update:visible',false);
+      console.log(this.diaLogForm)
     },
-    back(){
-      this.$router.back(-1);
-    }
   }
 }
 </script>
@@ -130,20 +78,19 @@ export default {
 .picture{
   margin-right: -10px;
 }
-
 ::v-deep .el-upload{
   width: 100px;
   height: 100px;
   line-height: 100px;
 }
 ::v-deep .el-upload-list--picture-card .el-upload-list__item{
-  width: 232px;
-  height: 172px;
+  width: 750px;
+  height: 406px;
   line-height: 100px;
 }
 ::v-deep .el-upload-list--picture-card .el-upload-list__item-thumbnail{
-  width: 232px;
-  height: 172px;
+  width: 750px;
+  height: 406px;
   line-height: 100px;
 }
 ::v-deep .avatar{

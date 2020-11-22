@@ -16,7 +16,9 @@
         <div class="title">
           <p>{{currentType.name}}</p>
           <p v-html="currentType.content"></p>
-          <p class="price">￥{{currentType.price}}元/{{cycle[currentType.si]}}</p>
+          <div class="price">
+           <span>价格:</span> <p>￥{{currentType.price}}元/{{cycle[currentType.si]}}</p>
+          </div>
         </div>
         <div class="type-image">
           <el-image style="width: 200px; height: 200px" :src="currentType.image"></el-image>
@@ -25,6 +27,17 @@
       <div class="option">
         <el-button type="primary" class="modify" @click="revise">修改</el-button>
         <el-button type="primary" class="modify" @click="add">添加</el-button>
+        <el-dropdown>
+          <el-button type="primary">
+            添加图片<i class="el-icon-arrow-up el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="addImg('002')">添加image</el-dropdown-item>
+            <el-dropdown-item @click.native="addImg('101')">添加banner1</el-dropdown-item>
+            <el-dropdown-item @click.native="addImg('102')">添加banner2</el-dropdown-item>
+            <el-dropdown-item @click.native="addImg('103')">添加banner3</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </el-card>
     <!--修改工位信息-->
@@ -35,21 +48,29 @@
     <el-dialog title="添加信息" center :visible.sync="addVisible" width="900px">
       <AddType  :visible.sync="addVisible" :upToDate.sync="upToDate"></AddType>
     </el-dialog>
+    <el-dialog title="添加图片" center :visible.sync="imgVisible" width="900px">
+      <div>
+        <el-divider content-position="left">添加图片</el-divider>
+        <AddImage group="006" :type="addType" :visible.sync="imgVisible" :upToDate.sync="upToDate"></AddImage>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 
 import AddType from "@/views/Add/AddType";
+import AddImage from "@/views/Add/AddImage";
 export default {
   name: "TypeMessage",
-  components: {AddType},
+  components: {AddImage, AddType},
   data() {
     return {
       /*修改Dialog是否显示*/
       reviseVisible: false,
       /*添加Dialog是否显示*/
       addVisible:false,
+      imgVisible:false,
       cycle:{
         1:'时',
         2:'天',
@@ -62,6 +83,7 @@ export default {
       upToDate:0,
       /*当前工位id*/
       currentId:'',
+      addType:'',
     }
   },
   created() {
@@ -89,6 +111,7 @@ export default {
     /*获取当前id的工位信息*/
     async getItemType(id){
       let key = sessionStorage.getItem('key');
+      console.log(sessionStorage.getItem('uid'));
       let signStr=`id=${id}&sign=${key}`;
       let sign=this.$md5(signStr).  toUpperCase();
       const res = await this.$request.post('/console/GetItemType', {id}, {
@@ -103,6 +126,7 @@ export default {
             message:res.data.errMsg
           })
       }
+      console.log(res);
       this.$store.commit('getType',res.data.data);
     },
     /*改变Dialog状态*/
@@ -115,7 +139,18 @@ export default {
     /*返回*/
     back(){
       this.$router.back(-1);
-    }
+    },
+    addPicture(){
+      this.imgVisible=true;
+      /*this.$router.push({path:'/index/addimg',query:{
+        id:this.currentId
+        }});*/
+    },
+    addImg(type){
+      console.log("123");
+      this.addType=type;
+      this.imgVisible=true;
+    },
   }
 }
 </script>
@@ -125,8 +160,15 @@ export default {
   display: flex;
   justify-content: space-between;
   .title {
+    display: flex;
+    flex-direction: column;
     .price {
-      color: red;
+      display: flex;
+      align-items: center;
+      p{
+        margin-left: 20px;
+        color: red;
+      }
     }
   }
 }
