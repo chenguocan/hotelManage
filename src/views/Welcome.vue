@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--banner-->
     <el-carousel :interval="4000" type="card" height="150px">
       <el-carousel-item v-for="item in 6" :key="item">
         <h3 class="medium">{{ item }}</h3>
@@ -9,6 +10,7 @@
       <div class="image">
       </div>
     </el-card>
+   <!-- 公司简介-->
     <el-card>
       <div class="title">
         <div class="titleDetail">
@@ -19,6 +21,7 @@
           <el-button size="small" icon="el-icon-edit" circle @click="edit"></el-button>
         </div>
       </div>
+      <!--工位展示-->
       <el-tree
           :data="itemTypes.list"
           :props="tagName"
@@ -49,12 +52,13 @@ export default {
   name: "Welcome",
   data() {
     return {
-      activeName: 'first',
+      /*工位类型*/
       itemTypes: {
         list: [],
         title: '',
         sub_title: '',
       },
+      /*标题*/
       titleForm: {
         title: '',
         sub_title: '',
@@ -63,20 +67,21 @@ export default {
         children: 'list',
         label: 'name',
       },
+      /*修改Dialog是否显示*/
       editVisible: false,
     }
   },
   mounted() {
-    console.log("123");
     this.getMenuItem();
-    console.log(this.itemTypes);
   },
   methods: {
+    /*修改事件*/
     edit() {
       this.titleForm.title = this.itemTypes.title;
       this.titleForm.sub_title = this.itemTypes.sub_title;
       this.editVisible = true;
     },
+    /*获取菜单*/
     async getMenuItem() {
       const res = await this.$request.post('/console/GetItemTypes');
       console.log(this.itemTypes.list);
@@ -87,24 +92,15 @@ export default {
       console.log(this.itemTypes);
       sessionStorage.setItem('types',this.itemTypes);
     },
+    /*获取类型信息*/
     async typeDetail(data) {
       let id = data.id;
       if (id.length === 8) {
-        let key = sessionStorage.getItem('key');
-        let signStr=`id=${id}&sign=${key}`;
-        let sign=md5(signStr).toUpperCase();
-        console.log(signStr);
-        console.log(sign);
-        const res = await this.$request.post('/console/GetItemType', {id}, {
-          headers:{
-            sign
-          }
-        })
-        console.log(res);
-        let type=JSON.stringify(res.data.data);
-        this.$router.push({path: '/index/message', query: {type}});
+        /*let type=JSON.stringify(res.data.data);*/
+        this.$router.push({path: '/index/message', query: {id}});
       }
     },
+    /*提交标题修改*/
     async submit(){
       let signStr;
       let key=sessionStorage.getItem('key');

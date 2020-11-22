@@ -8,12 +8,15 @@ export default new Vuex.Store({
       list: [],
       title: '',
       sub_title: '',
-    }
+    },
+    itemType:{},
   },
   mutations: {
       getTypes(state,types){
-        console.log(state);
         state.itemTypes=types;
+      },
+      getType(state,types){
+        state.itemType=types;
       }
   },
   actions: {

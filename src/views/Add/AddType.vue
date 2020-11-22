@@ -2,7 +2,7 @@
   <div>
     <el-form :model="editForm" label-width="150px">
       <el-form-item label="id">
-        <el-input v-model="editForm.id" :disabled="true" style="max-width: 220px"></el-input>
+        <el-input v-model="editForm.id" :disabled="disabled" style="max-width: 220px"></el-input>
       </el-form-item>
       <el-form-item label="项目名称">
         <el-input v-model="editForm.name" style="max-width: 220px"></el-input>
@@ -18,7 +18,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="人数">
-        <el-input v-model="editForm.si" style="max-width: 220px"></el-input>
+        <el-input v-model.number="editForm.si" style="max-width: 220px"></el-input>
       </el-form-item>
       <el-form-item label="状态">
         <el-select v-model="editForm.state" placeholder="请选择状态" style="max-width: 300px">
@@ -34,7 +34,9 @@
       </el-form-item>
     </el-form>
     <Editor :editData.sync="editData"></Editor>
-    <el-button type="primary" @click="onSubmit">提交</el-button>
+    <div class="btn">
+      <el-button type="primary" @click="onSubmit" class="submit">提交</el-button>
+    </div>
   </div>
 </template>
 
@@ -44,7 +46,7 @@ import md5 from "js-md5"
 
 export default {
   name: "AddType",
-  props: ['currentType'],
+  props: ['currentType','visible','upToDate'],
   components: {
     Editor
   },
@@ -58,21 +60,16 @@ export default {
         name: '',
         price: 0,
         show: 0,
-        si: '',
-        state: 1,
+        si: 0,
+        state: 0,
         subtitle: '',
         title: '',
       },
       disabled: true
     }
   },
-  watch: {
-    editData(value) {
-      console.log(value);
-    },
-  },
   mounted() {
-    if (this.editForm) {
+    if (this.currentType) {
       this.editForm.id = this.currentType.id;
       this.editForm.name = this.currentType.name;
       this.editForm.price = this.currentType.price * 100;
@@ -83,6 +80,8 @@ export default {
       this.editForm.subtitle = this.currentType.subtitle;
       this.editForm.title = this.currentType.title;
       this.editData = this.currentType.content;
+    }else{
+      this.disabled=false;
     }
   },
   methods: {
@@ -91,7 +90,6 @@ export default {
       this.$router.back(-1)
     },
     async onSubmit() {
-      console.log(this.editForm);
       this.editForm.content = this.editData;
       let str = '';
       for (let key in this.editForm) {
@@ -99,7 +97,6 @@ export default {
       }
       let key = sessionStorage.getItem('key');
       str = `${str}&sign=${key}`;
-/*      str=`content=<p>办公面积8-10，无窗，无烟区123</p>&count=0&id=01060606&name=B区2工位&price=200000&show=True&si=4&state=1&subtitle=2工位&title=2工位&sign=${key}`*/
       str = str.substr(1);
       let sign = md5(str).toUpperCase();
       const res = await this.$request.post('/Console/SetItemTypeDetailAboutMobile',
@@ -108,7 +105,7 @@ export default {
             "id": this.editForm.id,
             "name": this.editForm.name,
             "price": this.editForm.price,
-            "show": 'True',
+            "show": this.editForm.show,
             "si": this.editForm.si,
             "state": this.editForm.state,
             "subtitle": this.editForm.subtitle,
@@ -118,17 +115,27 @@ export default {
               sign
             }
           })
-      console.log(res);
-      console.log(sign);
-      console.log(str);
+      if(res.data.errCode===0){
+        this.$message({
+          type:'success',
+          message:res.data.errMsg
+        })
+        this.$emit('update:upToDate',1);
+      }else{
+        this.$message({
+          type:'error',
+          message:res.data.errMsg
+        })
+      }
+      this.$emit('update:visible',false);
     },
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
-.card {
+.btn{
   display: flex;
   justify-content: center;
 }

@@ -4,7 +4,7 @@
     <quill-editor
         v-model="content"
         ref="myQuillEditor"
-        style="height: 200px"
+        style="height: 200px;width: 700px;margin-left: 150px"
         :options="editorOption"
         @change="onEditorChange"
         >
@@ -46,12 +46,10 @@ export default {
     }
   },
   mounted() {
-    console.log("123");
     this.content=this.editData;
    },
   watch:{
-    editData(value){
-      console.log(value)
+    editData(){
       this.content=this.editData;
     }
   },
