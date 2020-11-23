@@ -4,11 +4,7 @@ import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import Welcome from "@/views/Welcome";
 import NotFound from "@/views/NotFound";
-import ItemType from "@/views/ItemType/ItemType";
-import TypeMessage from "@/views/ItemType/TypeMessage";
-import AddType from "@/views/Add/AddType";
-import AddImage from "@/views/Add/AddImage";
-import AddBanner from "@/views/Add/AddBanner";
+import UpdateItem from "@/views/ItemType/UpdateItem";
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -36,21 +32,10 @@ const routes = [
       path:'/index/welcome',
       component:Welcome,
     },{
-      path:'/index/itemtype',
-      component: ItemType
-    },{
-      path:'/index/message',
-      component: TypeMessage,
-    },{
-      path:'/index/addtype',
-      component: AddType
-    },{
-      path:'/index/addimg',
-      component: AddImage
-    },{
-      path: '/index/addbanner',
-      component:AddBanner
-    }]
+      path: '/index/updateitem',
+        component: UpdateItem
+    }
+    ]
   },
   {
     path:'*',
@@ -62,7 +47,7 @@ const routes = [
   }
 ]
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

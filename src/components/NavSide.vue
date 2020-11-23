@@ -51,8 +51,8 @@ export default {
     handleClose(){
       console.log("close");
     },
-    handleOpen(){
-      console.log("open");
+    handleOpen(index){
+      console.log(index);
     },
   }
 }

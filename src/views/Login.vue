@@ -32,8 +32,8 @@ export default {
       userInfo:'',
       loginForm: {
         company:'fe77e4c39c32be1c',
-        username: '8888',
-        password: '1212',
+        username: '9897',
+        password: '9897',
       },
     }
   },

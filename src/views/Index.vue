@@ -3,7 +3,6 @@
     <el-container>
       <el-header>
         <div class="title">
-          <img class="icon" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605436528491&di=989a24966e62bada47f63a3d38a42429&imgtype=0&src=http%3A%2F%2Fimg.huoyuan51.com%2F2020%2F04%2F14yb820Q0ceB.jpg" />
           <h1>租赁管理系统</h1>
         </div>
         <div class="user">

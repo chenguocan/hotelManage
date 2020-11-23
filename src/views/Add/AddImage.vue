@@ -2,7 +2,8 @@
   <div class="picture">
     <div class="upload">
       <el-upload
-          ref="imgBroadcastUpload"
+          ref="upload"
+          :class="{uoloadSty:showBtnImg,disUoloadSty:noneBtnImg}"
           :auto-upload="false"
           :file-list="diaLogForm.imgBroadcastList"
           list-type="picture-card"
@@ -14,9 +15,9 @@
       >
         <i class="el-icon-plus"></i>
       </el-upload>
-      <div slot="tip" class="el-upload__tip" v-if="type==='001'">上传232*172的图片效果更佳</div>
+      <el-button type="success" class="btn" @click="submitDialogData">上传</el-button>
+      <div slot="tip" class="el-upload__tip" v-if="type==='002'">上传232*172的图片效果更佳</div>
       <div slot="tip" class="el-upload__tip" v-else>上传750*402的图片效果更佳</div>
-      <el-button type="primary" @click="submitDialogData">提交</el-button>
     </div>
   </div>
 </template>
@@ -26,13 +27,16 @@ import { uploadImgToBase64 } from '@/lib/utils' // 导入本地图片转base64�
 
 export default {
   name: 'AddImage',
-  props:['group','type','upToDate'],
+  props:['id','group','type'],
   data () {
     return {
       diaLogForm: {
         imgBroadcastList:[], // 储存选中的图片列表
         imgsStr:''   // 后端需要的多张图base64字符串 , 分割
       },
+      showBtnImg:true,
+      noneBtnImg:false,
+      limitCountImg:1,
       currentId:'',
       currentType:'',
       currentGroup:'',
@@ -41,12 +45,14 @@ export default {
   watch:{
     type(){
       this.currentType=this.type;
+    },
+    id(){
+      console.log(this.id);
+      this.currentId=this.id;
+    },
+    group(){
+      this.currentGroup=this.group;
     }
-  },
-  created() {
-    console.log(this.type,this.group);
-    this.currentId=this.$route.query.id;
-    console.log(this.$route.query.id);
   },
   methods: {
     // 图片选择后 保存在 diaLogForm.imgBroadcastList 对象中
@@ -59,9 +65,11 @@ export default {
       } else {
         this.diaLogForm.imgBroadcastList.push(file)
       }
+      this.noneBtnImg = fileList.length >= this.limitCountImg;
     },
     // 有图片移除后 触发
     imgBroadcastRemove (file, fileList) {
+      this.noneBtnImg = fileList.length >= this.limitCountImg;
       this.diaLogForm.imgBroadcastList = fileList
     },
     // 提交弹窗数据
@@ -69,6 +77,7 @@ export default {
       const imgBroadcastListBase64 = []
       console.log('图片转base64开始...')
       // 并发 转码轮播图片list => base64
+      console.log(this.id);
       const filePromises = this.diaLogForm.imgBroadcastList.map(async file => {
         const response = await uploadImgToBase64(file.raw)
         return response.result.replace(/.*;base64,/, '') // 去掉data:image/jpeg;base64,
@@ -82,13 +91,13 @@ export default {
       console.log(this.diaLogForm);
       console.log(this.type);
       let key=sessionStorage.getItem('key');
-      let signStr=`id=${this.currentId}&imageGroup=${this.group}&imageName=${this.diaLogForm.imgBroadcastList[0].name}&imageType=${this.type}&sign=${key}`;
+      let signStr=`id=${this.id}&imageGroup=${this.group}&imageName=${this.diaLogForm.imgBroadcastList[0].name}&imageType=${this.type}&sign=${key}`;
       console.log(signStr);
       let sign=this.$md5(signStr).toUpperCase();
       console.log(sign);
       const res=await this.$request.post('/Console/SetImage',
           {
-            id:this.currentId,
+            id:this.id,
             imageData:this.diaLogForm.imgsStr,
             imageGroup:this.group,
             imageName:this.diaLogForm.imgBroadcastList[0].name,
@@ -111,7 +120,8 @@ export default {
         })
       }
       console.log(res);
-      this.$emit('update:visible',false);
+      this.$refs.upload.clearFiles()
+      this.diaLogForm.imgBroadcastList=[]
     },
     back(){
       this.$router.back(-1);
@@ -149,5 +159,18 @@ export default {
 ::v-deep .avatar{
   width: 100px;
   height: 100px;
+}
+.btn{
+  position:absolute;
+  right: 0;
+  transform: translateY(-50px);
+}
+.uoloadSty .el-upload--picture-card{
+  width:110px;
+  height:110px;
+  line-height:110px;
+}
+.disUoloadSty .el-upload--picture-card{
+  display:none;   /* 上传按钮隐藏 */
 }
 </style>

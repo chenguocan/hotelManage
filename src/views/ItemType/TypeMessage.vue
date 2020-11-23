@@ -2,17 +2,28 @@
   <div>
     <!--返回按钮-->
     <el-button  icon="el-icon-arrow-left" circle size="small" @click="back"></el-button>
-    <!--banner-->
+ <!--   &lt;!&ndash;banner&ndash;&gt;
     <el-carousel :interval="4000" type="card" height="250px">
       <el-carousel-item v-for="item in currentType.banner" :key="item">
         <el-image
             :src="item">
         </el-image>
       </el-carousel-item>
-    </el-carousel>
+    </el-carousel>-->
     <!--工位信息-->
-    <el-card>
-      <div class="type-detail">
+    <el-row>
+      <el-col :span="8">
+        <el-card>
+
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card >
+
+        </el-card>
+      </el-col>
+    </el-row>
+<!--      <div class="type-detail">
         <div class="title">
           <p>{{currentType.name}}</p>
           <p v-html="currentType.content"></p>
@@ -29,7 +40,7 @@
         <el-button type="primary" class="modify" @click="add">添加</el-button>
         <el-dropdown>
           <el-button type="primary">
-            添加图片<i class="el-icon-arrow-up el-icon--right"></i>
+            添加图片<i class="el-icon-arrow-up el-icon&#45;&#45;right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="addImg('002')">添加image</el-dropdown-item>
@@ -40,11 +51,11 @@
         </el-dropdown>
       </div>
     </el-card>
-    <!--修改工位信息-->
+    &lt;!&ndash;修改工位信息&ndash;&gt;
     <el-dialog title="修改信息" center :visible.sync="reviseVisible" width="900px">
       <AddType :current-type="currentType" :visible.sync="reviseVisible" :upToDate.sync="upToDate"></AddType>
     </el-dialog>
-    <!--添加新工位信息-->
+    &lt;!&ndash;添加新工位信息&ndash;&gt;
     <el-dialog title="添加信息" center :visible.sync="addVisible" width="900px">
       <AddType  :visible.sync="addVisible" :upToDate.sync="upToDate"></AddType>
     </el-dialog>
@@ -53,17 +64,13 @@
         <el-divider content-position="left">添加图片</el-divider>
         <AddImage group="006" :type="addType" :visible.sync="imgVisible" :upToDate.sync="upToDate"></AddImage>
       </div>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 
 <script>
-
-import AddType from "@/views/Add/AddType";
-import AddImage from "@/views/Add/AddImage";
 export default {
   name: "TypeMessage",
-  components: {AddImage, AddType},
   data() {
     return {
       /*修改Dialog是否显示*/
@@ -113,7 +120,7 @@ export default {
       let key = sessionStorage.getItem('key');
       console.log(sessionStorage.getItem('uid'));
       let signStr=`id=${id}&sign=${key}`;
-      let sign=this.$md5(signStr).  toUpperCase();
+      let sign=this.$md5(signStr).toUpperCase();
       const res = await this.$request.post('/console/GetItemType', {id}, {
         headers:{
           sign

@@ -4,7 +4,7 @@
     <quill-editor
         v-model="content"
         ref="myQuillEditor"
-        style="height: 200px;width: 700px;margin-left: 150px"
+        style="height: 200px;width: 500px;margin-left: 100px"
         :options="editorOption"
         @change="onEditorChange"
         >
@@ -30,10 +30,10 @@ export default {
             ['bold', 'italic', 'underline', 'strike'],    //加粗，斜体，下划线，删除线
             ['blockquote', 'code-block'],     //引用，代码块
             [{ 'header': 1 }, { 'header': 2 }],        // 标题，键值对的形式；1、2表示字体大小
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
+/*            [{ 'list': 'ordered'}, { 'list': 'bullet' }],     //列表
             [{ 'script': 'sub'}, { 'script': 'super' }],   // 上下标
             [{ 'indent': '-1'}, { 'indent': '+1' }],     // 缩进
-            [{ 'direction': 'rtl' }],             // 文本方向
+            [{ 'direction': 'rtl' }],             // 文本方向*/
             [{ 'size': ['small', false, 'large', 'huge'] }], // 字体大小
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],     //几级标题
             [{ 'color': [] }, { 'background': [] }],     // 字体颜色，字体背景颜色
@@ -49,7 +49,8 @@ export default {
     this.content=this.editData;
    },
   watch:{
-    editData(){
+    editData(val){
+      console.log(val);
       this.content=this.editData;
     }
   },
@@ -66,7 +67,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.edit_container{
-  height: 300px;
-}
 </style>
