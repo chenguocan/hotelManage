@@ -4,13 +4,12 @@ import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import Welcome from "@/views/Welcome";
 import NotFound from "@/views/NotFound";
-import UpdateItem from "@/views/ItemType/UpdateItem";
 Vue.use(VueRouter)
 
-const originalPush = VueRouter.prototype.push
+/*const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
-}
+}*/
 
 const routes = [
   {
@@ -31,9 +30,6 @@ const routes = [
     {
       path:'/index/welcome',
       component:Welcome,
-    },{
-      path: '/index/updateitem',
-        component: UpdateItem
     }
     ]
   },
