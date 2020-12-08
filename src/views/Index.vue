@@ -3,8 +3,9 @@
     <el-container>
       <el-header>
         <div class="title">
-          <h1>租赁管理系统</h1>
+          <h1>火云后台管理系统</h1>
         </div>
+        <el-button @click="gotoImage">图片</el-button>
         <div class="user">
           <el-input placeholder="搜索从这里开始" style="width: 250px;margin-right: 20px" size="small" v-model="search">
             <el-button slot="append" icon="el-icon-search"></el-button>
@@ -53,6 +54,9 @@ export default {
     this.getMenu();
   },
   methods:{
+    gotoImage(){
+      this.$router.push("/index/image");
+    },
     async getMenu(){
       const res=await this.$request.post('/Console/GetMenu');
       this.menuList=res.data.data;
@@ -68,12 +72,12 @@ export default {
       this.isCollapse=!this.isCollapse;
     },
     async exit(){
-      await this.$request.post("/Base/logout");
+/*      await this.$request.post("/Base/logout");
       window.sessionStorage.clear();
       this.$message({
         type:'success',
         message:'成功退出'
-      })
+      })*/
       this.$router.push("/login");
     }
   },
