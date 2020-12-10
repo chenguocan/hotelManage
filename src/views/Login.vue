@@ -24,7 +24,7 @@
 </template>
 
 <script>
-/*import getMd5 from "@/lib/getMd5";*/
+import getMd5 from "@/lib/getMd5";
 export default {
   name: "Login",
   data() {
@@ -39,7 +39,7 @@ export default {
   },
   methods:{
     async submitLogin(){
-/*      const res=await this.$request.post("https://www.hotelcard.cn/Publish/Base/Login",{
+      const res=await this.$request.post("https://www.hotelcard.cn/Publish/Base/Login",{
         company:this.loginForm.company,
         code:this.loginForm.username,
         password:this.loginForm.password,
@@ -57,7 +57,7 @@ export default {
       this.$message({
         type:'success',
         message:'登录成功'
-      })*/
+      })
       this.$router.push("/index");
     },
   }

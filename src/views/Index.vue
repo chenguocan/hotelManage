@@ -5,7 +5,6 @@
         <div class="title">
           <h1>火云后台管理系统</h1>
         </div>
-        <el-button @click="gotoImage">图片</el-button>
         <div class="user">
           <el-input placeholder="搜索从这里开始" style="width: 250px;margin-right: 20px" size="small" v-model="search">
             <el-button slot="append" icon="el-icon-search"></el-button>
@@ -48,10 +47,12 @@ export default {
       isCollapse:false,
       search:'',
       menuList:[],
+      banner:[],
     }
   },
   created() {
     this.getMenu();
+    this.getMenuItem()
   },
   methods:{
     gotoImage(){
@@ -72,14 +73,23 @@ export default {
       this.isCollapse=!this.isCollapse;
     },
     async exit(){
-/*      await this.$request.post("/Base/logout");
+      await this.$request.post("/Base/logout");
       window.sessionStorage.clear();
       this.$message({
         type:'success',
         message:'成功退出'
-      })*/
+      })
       this.$router.push("/login");
-    }
+    },
+      async getMenuItem() {
+        const res = await this.$request.post('/console/GetItemTypes');
+        let banner=res.data.data.banner;
+        banner.forEach(item=>{
+          let xxx={url:item}
+          this.banner.push(xxx);
+        })
+        sessionStorage.setItem('types', this.itemTypes);
+      },
   },
   name: 'Home',
 }
@@ -135,6 +145,7 @@ export default {
   .el-main{
     background: #f4f6f9;
     margin-top:60px;
+    padding: 0;
   }
   .el-footer{
     margin-left: 250px;

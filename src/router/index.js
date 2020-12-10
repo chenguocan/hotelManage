@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
-import Welcome from "@/views/Welcome";
 import NotFound from "@/views/NotFound";
 import AddImg from "@/views/AddImg";
 Vue.use(VueRouter)
@@ -30,7 +29,7 @@ const routes = [
     },
     {
       path:'/index/welcome',
-      component:Welcome,
+      component:AddImg,
     }, {
       path:"/index/image",
       component: AddImg
@@ -51,7 +50,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-/*router.beforeEach((to,from,next)=>{
+router.beforeEach((to,from,next)=>{
   if (to.path === "/login") {
     return next();
   }
@@ -60,6 +59,6 @@ const router = new VueRouter({
     return next("/login");
   }
   next();
-})*/
+})
 
 export default router

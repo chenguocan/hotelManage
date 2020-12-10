@@ -4,7 +4,7 @@
     <quill-editor
         v-model="content"
         ref="myQuillEditor"
-        style="height: 200px;width: 500px;margin-left: 100px"
+        style="width: inherit;height: 250px"
         :options="editorOption"
         @change="onEditorChange"
         >
@@ -37,9 +37,10 @@ export default {
             [{ 'size': ['small', false, 'large', 'huge'] }], // 字体大小
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],     //几级标题
             [{ 'color': [] }, { 'background': [] }],     // 字体颜色，字体背景颜色
-            [{ 'font': [] }],     //字体
+/*            [{ 'font': [] }],     //字体*/
             [{ 'align': [] }],    //对齐方式
             ['clean'],    //清除字体样式
+            ['image','video']
           ]
         }
       }

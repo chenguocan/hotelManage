@@ -13,7 +13,7 @@
           :auto-upload="false"
           accept=".jpg,.jpeg,.png,.JPG,.JPEG"
       >
-        <i class="el-icon-plus"></i>
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       </el-upload>
       <el-dialog append-to-body :visible.sync="dialogVisible" width="500px">
         <img width="100%" :src="dialogImageUrl" alt/>
