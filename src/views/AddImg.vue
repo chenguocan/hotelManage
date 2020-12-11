@@ -1,10 +1,11 @@
 <template>
   <div >
     <div>
-      <ul class="foodList">
-        <li class="food" v-for="(item,index) in banner" :key="index">
+      <ul class="bannerList">
+        <li class="banner" v-for="(item,index) in banner" :key="index">
           <!--<img class="food" :src="item"/>-->
-          <crop-image :id="item[0].id" :group="item[0].group" :type="item[0].type" :file="item"></crop-image>
+          <banner-img :file="item" :id="item[0].id" :group="item[0].group" :type="item[0].type"  />
+         <!-- <crop-image :id="item[0].id" :group="item[0].group" :type="item[0].type" :file="item"></crop-image>-->
           <!-- <el-button class="edit" icon="el-icon-edit" size="mini" circle @click="edit(item)"></el-button>-->
         </li>
       </ul>
@@ -12,18 +13,21 @@
    <!-- 公司简介-->
     <div class="main">
       <div class="about">
-        <div class="about-title">
-          <el-form :inline="true" size="mini" :model="aboutForm" class="demo-form-inline">
-            <el-form-item label="标题">
-              <el-input v-model="aboutForm.title" placeholder="标题"></el-input>
-            </el-form-item>
-            <el-form-item label="子标题">
-              <el-input v-model="aboutForm.sub_title" placeholder="子标题"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="modify" >修改</el-button>
-            </el-form-item>
-          </el-form>
+        <div class="modifyDetail">
+          <div class="about-title">
+            <el-form label-position="right" label-width="80px" size="mini" :model="aboutForm" class="demo-form-inline">
+              <el-form-item label="标题">
+                <el-input v-model="aboutForm.title" placeholder="标题"></el-input>
+              </el-form-item>
+              <el-form-item label="子标题">
+                <el-input v-model="aboutForm.sub_title" placeholder="子标题"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="modify" >修改</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <item-img :file="aboutImg"></item-img>
         </div>
         <div class="about-content">
           <editor :edit-data.sync="aboutContent"></editor>
@@ -66,14 +70,16 @@
 </template>
 
 <script>
-import cropImage from "@/components/cropImage";
 import Editor from "@/components/Editor";
 import ItemDetail from "@/components/ItemDetail";
+import BannerImg from "@/components/BannerImg";
+import ItemImg from "@/components/ItemImg";
 export default {
   components: {
     ItemDetail,
-    cropImage,
+    BannerImg,
     Editor,
+    ItemImg
   },
   name: "AddImg",
   data() {
@@ -96,6 +102,7 @@ export default {
       },
       typeList:[],
       itemId:0,
+      aboutImg:[],
     }
   },
   created() {
@@ -140,6 +147,8 @@ export default {
       this.about = res.data.data;
       this.aboutForm = this.about;
       this.aboutContent=this.about.content;
+      let aboutImg={url:res.data.data.image};
+      this.aboutImg=this.aboutImg.push(aboutImg);
       console.log(this.aboutContent);
     },
     modify(){
@@ -164,9 +173,12 @@ ul, li {
   width: 1300px;
   margin: 20px 0 0 100px !important;
 }
-.foodList {
+.bannerList {
   margin: 0 0 10px;
   display: flex;
+}
+.banner{
+  margin:0 0 5px 65px;
 }
 .main{
   display: flex;
@@ -190,6 +202,10 @@ ul, li {
   height: 80vh;
 }
 .about-title{
+  margin-right: 100px;
   width: 400px;
+}
+.modifyDetail{
+  display: flex;
 }
 </style>

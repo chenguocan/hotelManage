@@ -4,6 +4,7 @@ import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import NotFound from "@/views/NotFound";
 import AddImg from "@/views/AddImg";
+import UpImage from "@/components/BannerImg";
 Vue.use(VueRouter)
 
 /*const originalPush = VueRouter.prototype.push
@@ -33,6 +34,9 @@ const routes = [
     }, {
       path:"/index/image",
       component: AddImg
+    },{
+      path:"/index/myimage",
+        component: UpImage
     }
     ]
   },

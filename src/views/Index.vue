@@ -5,6 +5,7 @@
         <div class="title">
           <h1>火云后台管理系统</h1>
         </div>
+        <button @click="$router.push('/index/myimage')">xxx</button>
         <div class="user">
           <el-input placeholder="搜索从这里开始" style="width: 250px;margin-right: 20px" size="small" v-model="search">
             <el-button slot="append" icon="el-icon-search"></el-button>
@@ -48,6 +49,7 @@ export default {
       search:'',
       menuList:[],
       banner:[],
+      aboutImg:[],
     }
   },
   created() {

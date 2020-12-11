@@ -4,7 +4,7 @@
     <quill-editor
         v-model="content"
         ref="myQuillEditor"
-        style="width: inherit;height: 250px"
+        style="width: inherit;height: 300px"
         :options="editorOption"
         @change="onEditorChange"
         >
