@@ -59,9 +59,9 @@ export default {
       let input=document.createElement('input');
       input.type='file'
       this.$refs.temp.appendChild(input);
-      input.click()
       input.addEventListener('change',()=>{
-        let file=input.files[0]
+        let file=input.files[0];
+        this.currentFile=file;
         input.remove();
         if(file){
           let reader = new FileReader();
@@ -76,6 +76,7 @@ export default {
           reader.readAsDataURL(file);
         }
       })
+      input.click()
     },
 /*    togglePicture(){
       console.log(this.$refs.inputImage.files);
@@ -98,7 +99,9 @@ export default {
 
     async submitPicture(){
       let key=sessionStorage.getItem('key');
-
+      console.log(this.id);
+      console.log(this.group);
+      console.log(this.type);
       if(this.id!=='' && this.group!=='' && this.type!=='' && this.upLoadFile!==''){
         let signStr=`id=${this.id}&imageGroup=${this.group}&imageName=${this.currentFile.name}&imageType=${this.type}&sign=${key}`;
         let sign=this.$md5(signStr).toUpperCase();

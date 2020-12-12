@@ -42,10 +42,10 @@
       </div>
       <ul class="imageList">
         <li class="imageItem" v-if="typeFile.url">
-          <UpImage :file="typeFile.url" :width="250" :height="125"></UpImage>
+          <UpImage :file="typeFile.url" :id="typeFile.id" :type="typeFile.type" :group="typeFile.group" :width="250" :height="125"></UpImage>
         </li>
         <li class="imageItem" v-for="(item,index) in banner" :key="index">
-          <UpImage :file="item.url" :width="200" :height="100"></UpImage>
+          <UpImage :file="item.url" :id="item.id" :type="item.type" :group="item.group" :width="200" :height="100"></UpImage>
         </li>
       </ul>
 
@@ -94,12 +94,14 @@ export default {
       }
       console.log(res);
       let banner=res.data.data.banner;
+      let type=100;
       banner.forEach(item=>{
-        let file={url:item}
+        type=type+1;
+        let file={url:item,group:'006',type:`${type}`,id}
         this.banner.push(file);
       })
       this.itemForm=res.data.data;
-      let typeFile={url:res.data.data.image};
+      let typeFile={url:res.data.data.image,group:'006',type:'002',id};
       this.typeFile=typeFile;
     },
   }
