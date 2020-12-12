@@ -3,10 +3,8 @@
     <div>
       <ul class="bannerList">
         <li class="banner" v-for="(item,index) in banner" :key="index">
-          <!--<img class="food" :src="item"/>-->
-          <banner-img :file="item" :id="item[0].id" :group="item[0].group" :type="item[0].type"  />
-         <!-- <crop-image :id="item[0].id" :group="item[0].group" :type="item[0].type" :file="item"></crop-image>-->
-          <!-- <el-button class="edit" icon="el-icon-edit" size="mini" circle @click="edit(item)"></el-button>-->
+          <UpImage ref="image" :file="item.url" :id="item.id" :type="item.type" :group="item.group" :width="350" :height="150">
+          </UpImage>
         </li>
       </ul>
     </div>
@@ -27,7 +25,10 @@
               </el-form-item>
             </el-form>
           </div>
-          <item-img :file="aboutImg"></item-img>
+          <div v-if="aboutImg.url">
+            <UpImage :file="aboutImg.url" :width="300" :height="100"></UpImage>
+          </div>
+
         </div>
         <div class="about-content">
           <editor :edit-data.sync="aboutContent"></editor>
@@ -72,14 +73,12 @@
 <script>
 import Editor from "@/components/Editor";
 import ItemDetail from "@/components/ItemDetail";
-import BannerImg from "@/components/BannerImg";
-import ItemImg from "@/components/ItemImg";
+import UpImage from "@/components/UpImage";
 export default {
   components: {
+    UpImage,
     ItemDetail,
-    BannerImg,
     Editor,
-    ItemImg
   },
   name: "AddImg",
   data() {
@@ -105,7 +104,7 @@ export default {
       aboutImg:[],
     }
   },
-  created() {
+  mounted() {
     this.getMenuItem()
     this.getAbout()
   },
@@ -129,8 +128,8 @@ export default {
       this.typeList=res.data.data.list;
       console.log(this.typeList);
       banner.forEach(item=>{
-        let xxx=[{url:item,id:'2',group:'001',type:type+=1}]
-        this.banner.push(xxx);
+        let file={url:item,id:'2',group:'001',type:`${type+=1}`}
+        this.banner.push(file);
       })
       sessionStorage.setItem('types', this.itemTypes);
     },
@@ -148,8 +147,8 @@ export default {
       this.aboutForm = this.about;
       this.aboutContent=this.about.content;
       let aboutImg={url:res.data.data.image};
-      this.aboutImg=this.aboutImg.push(aboutImg);
-      console.log(this.aboutContent);
+      this.aboutImg=aboutImg;
+      console.log(this.aboutImg);
     },
     modify(){
       console.log(this.aboutContent);
@@ -170,11 +169,11 @@ ul, li {
   list-style: none;
 }
 ::v-deep .el-dialog{
-  width: 1300px;
+  min-width: 1300px;
+  min-height:710px ;
   margin: 20px 0 0 100px !important;
 }
 .bannerList {
-  margin: 0 0 10px;
   display: flex;
 }
 .banner{
@@ -207,5 +206,8 @@ ul, li {
 }
 .modifyDetail{
   display: flex;
+}
+::v-deep .el-dialog__body{
+  padding: 0 0 0 125px;
 }
 </style>

@@ -94,7 +94,9 @@ export default {
       }
     },
     changeImg(file, fileList) {
-      this.fileList = fileList.slice(-1);
+      this.fileList = [];
+      this.fileList.push(fileList[1]);
+      console.log(fileList[1]);
       console.log(this.fileList);
       this.fileName=this.fileList[0].name;
       console.log(this.fileName);

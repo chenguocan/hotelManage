@@ -41,11 +41,11 @@
         <el-button type="primary" >修改</el-button>
       </div>
       <ul class="imageList">
-        <li class="imageItem">
-          <item-img :file="typeFile"></item-img>
+        <li class="imageItem" v-if="typeFile.url">
+          <UpImage :file="typeFile.url" :width="250" :height="125"></UpImage>
         </li>
         <li class="imageItem" v-for="(item,index) in banner" :key="index">
-          <item-img :file="item"  />
+          <UpImage :file="item.url" :width="200" :height="100"></UpImage>
         </li>
       </ul>
 
@@ -56,19 +56,19 @@
 
 <script>
 import Editor from "@/components/Editor";
-import ItemImg from "@/components/ItemImg";
+import UpImage from "@/components/UpImage";
 export default {
   props:["id"],
   name: "ItemDetail",
   components:{
+    UpImage,
     Editor,
-    ItemImg
   },
   data(){
     return{
       itemForm:{},
       typeFile:[],
-      itemFile:[],
+      itemFile:'',
       banner:[],
     }
   },
@@ -95,12 +95,12 @@ export default {
       console.log(res);
       let banner=res.data.data.banner;
       banner.forEach(item=>{
-        let xxx=[{url:item}]
-        this.banner.push(xxx);
+        let file={url:item}
+        this.banner.push(file);
       })
       this.itemForm=res.data.data;
       let typeFile={url:res.data.data.image};
-      this.typeFile=this.typeFile.push(typeFile);
+      this.typeFile=typeFile;
     },
   }
 }
@@ -117,6 +117,11 @@ export default {
 .itemEditor{
   width: 600px;
   height: 375px;
+}
+.imageList{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .imageItem{
   margin-left: 50px;

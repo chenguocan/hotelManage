@@ -4,7 +4,7 @@ import Index from '../views/Index.vue'
 import Login from "../views/Login.vue"
 import NotFound from "@/views/NotFound";
 import AddImg from "@/views/AddImg";
-import UpImage from "@/components/BannerImg";
+import UpImage from "@/components/UpImage";
 Vue.use(VueRouter)
 
 /*const originalPush = VueRouter.prototype.push
